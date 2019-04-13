@@ -22,15 +22,13 @@ export default class box extends Component {
     subscribeToNewFiles = () => {
         
         const box = this.props.match.params.id;
-        console.log(box);
         const io = socket('https://oministack-atila.herokuapp.com');
 
         io.emit('connectRoom',box);
         io.on('file', data => {
             // 1- Primeiro estou copiando todo o conteudo do box atual para o novo state
             // 2- Agora vou modificar o files
-            // data e o arquivo que eu acabei de fazer upload
-            console.log(this.state.box);
+            // data e o arquivo que eu acabei de fazer uploadya
             this.setState({ box: { ... this.state.box, files:[data,...this.state.box.files] } });
         });
     }
