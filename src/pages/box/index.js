@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 
-import {MdInsertDriveFile} from 'react-icons/md';
 import logo from '../../assets/logo.svg';
 import api from  '../../services/api';
 import { distanceInWords } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import socket from 'socket.io-client';
 import  Dropzone   from 'react-dropzone';
+import { FaFileAlt } from "react-icons/fa";
 import './styles.css';
+
 export default class box extends Component {
 
     state = { box:{}}
@@ -30,7 +31,26 @@ export default class box extends Component {
             // 2- Agora vou modificar o files
             // data e o arquivo que eu acabei de fazer uploadya
             this.setState({ box: { ... this.state.box, files:[data,...this.state.box.files] } });
+            this.notify(`Novo arquivo adicionado: ${data.title}`);
         });
+    }
+    hasPermission(){
+        if(!('Notification' in window)) {
+
+            alert('Esse browser não suporte push notification');
+
+        }
+        else {
+
+            Notification.requestPermission();
+
+        }
+        
+    }
+    notify = (message) => {
+        if(Notification.permission === 'granted'){
+            var notification = new Notification(message,{body: 'Corra para ver', icon:'http://groupdevs.com/build/images/icon-webapps.png'});
+        }
     }
     handleUpload = (files) =>{
         files.forEach(file => {
@@ -63,7 +83,7 @@ export default class box extends Component {
                 this.state.box.files.map( file => (
                     <li key={file._id}>
                         <a className= "fileInfo" href={file.url} target="blank">
-                            <MdInsertDriveFile size={24} color="#A5Cfff" />
+                        <FaFileAlt />
                             <strong>{file.title}</strong>
                         </a>
                         <span>Há {" "} {distanceInWords(file.createdAt, new Date(), {

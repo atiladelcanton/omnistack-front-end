@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './styles.css';
-import {MdFolderShared} from 'react-icons/md';
+
 import logo from '../../assets/logo.svg';
 import api from  '../../services/api';
 import { distanceInWords } from 'date-fns';
@@ -28,15 +28,20 @@ export default class main extends Component {
 
     }
     hasPermission(){
-        if(!('Notification' in window)){
+        if(!('Notification' in window)) {
+
             alert('Esse browser não suporte push notification');
-        }else{
+
+        }
+        else {
+
             Notification.requestPermission();
+
         }
         
     }
     notify = (message) => {
-        if(Notification.permission == 'granted'){
+        if(Notification.permission === 'granted'){
             var notification = new Notification(message,{body: 'Corra para ver', icon:'http://groupdevs.com/build/images/icon-webapps.png'});
         }
     }
