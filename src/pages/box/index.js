@@ -27,21 +27,16 @@ export default class box extends Component {
 
         io.emit('connectRoom',box);
         io.on('file', data => {
-
             this.setState({ box: { ... this.state.box, files:[data,...this.state.box.files] } });
             this.notify(`Novo arquivo adicionado: ${data.title}`);
         });
     }
     hasPermission(){
         if(!('Notification' in window)) {
-
             alert('Esse browser não suporte push notification');
-
         }
         else {
-
             Notification.requestPermission();
-
         }
         
     }
